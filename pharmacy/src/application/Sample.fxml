@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
+   <bottom>
+		<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="933.0" BorderPane.alignment="CENTER">
+			<children>
+				<TableView fx:id="TableData" layoutX="73.0" layoutY="61.0" prefHeight="296.0" prefWidth="810.0">
+					<columns>
+						<TableColumn fx:id="IDColumn" prefWidth="120.79995727539062" text="ID " />
+						<TableColumn fx:id="NameColumn" prefWidth="287.2000274658203" text="Name" />
+						<TableColumn fx:id="DateBirthColumn" prefWidth="200.0" text="Date Of Birth" />
+						<TableColumn fx:id="dateofemploymentColumn" minWidth="0.0" prefWidth="202.39996337890625" text="Date Of Employment" />
+					</columns>
+					<opaqueInsets>
+						<Insets />
+					</opaqueInsets>
+				</TableView>
+				<AnchorPane layoutX="175.0" layoutY="22.0" />
+				<Button fx:id="Update" layoutX="427.0" layoutY="452.0" mnemonicParsing="false" onAction="#updateOnAction" prefHeight="26.0" prefWidth="81.0" style="-fx-background-color: #ed6253#ed6253;" text="Update" />
+				<Label layoutX="252.0" layoutY="369.0" prefHeight="23.0" prefWidth="170.0" text="Update Employee: ">
+					<font>
+						<Font name="Arial Bold" size="18.0" />
+					</font>
+				</Label>
+				<TextField fx:id="oldID" layoutX="431.0" layoutY="368.0" prefHeight="26.0" prefWidth="96.0" promptText="Old ID" />
+				<TextField fx:id="newName" layoutX="218.0" layoutY="419.0" prefHeight="28.0" prefWidth="83.0" promptText="New Name" />
+				<TextField fx:id="newDateBirth" layoutX="327.0" layoutY="419.0" prefHeight="28.0" prefWidth="103.0" promptText="New Date Birth" />
+				<TextField fx:id="Newdateofemployment" layoutX="460.0" layoutY="419.0" prefHeight="26.0" prefWidth="154.0" promptText="New Date Of Employment" />
+				<Label layoutX="196.0" layoutY="29.0" prefHeight="16.0" prefWidth="152.0" style="-fx-underline: true;" text="Search For Employees">
+					<font>
+						<Font name="Arial Bold" size="13.0" />
+					</font>
+				</Label>
+				<TextField fx:id="SearchFiled" layoutX="348.0" layoutY="25.0" prefHeight="26.0" prefWidth="254.0" promptText="Search Full Name Or ID Number" />
+				<TextField fx:id="ID" layoutX="290.0" layoutY="513.0" prefHeight="26.0" prefWidth="96.0" promptText="ID" />
+				<Button fx:id="Delete" layoutX="425.0" layoutY="512.0" mnemonicParsing="false" onAction="#deleteOnAction" prefHeight="26.0" prefWidth="81.0" style="-fx-background-color: #ed6253#ed6253;" text="Delete" />
+				<Line endX="755.0" layoutX="181.0" layoutY="490.0" startX="-174.99998474121094" stroke="#777272" />
+				<Label layoutX="128.0" layoutY="513.0" prefHeight="21.0" prefWidth="159.0" text="Delete Employee:">
+					<font>
+						<Font name="Arial Bold" size="18.0" />
+					</font>
+				</Label>
+				<Line endX="750.0" layoutX="186.0" layoutY="568.0" startX="-185.99998474121094" stroke="#959595" />
+				<Label layoutX="3.0" layoutY="589.0" prefHeight="21.0" prefWidth="146.0" text="Add Employee:">
+					<font>
+						<Font name="Arial Bold" size="18.0" />
+					</font>
+				</Label>
+				<TextField fx:id="addName" layoutX="156.0" layoutY="586.0" prefHeight="28.0" prefWidth="103.0" promptText="Name" />
+				<TextField fx:id="addDateOfBirth" layoutX="282.0" layoutY="586.0" prefHeight="26.0" prefWidth="96.0" promptText="Date Of Birth" />
+				<TextField fx:id="adddateofemployment" layoutX="410.0" layoutY="586.0" prefHeight="26.0" prefWidth="127.0" promptText="Date Of Employment" />
+				<Button fx:id="add" layoutX="433.0" layoutY="621.0" mnemonicParsing="false" onAction="#addOnAction" prefHeight="26.0" prefWidth="81.0" style="-fx-background-color: #ed6253#ed6253;" text="Add" />
+				<Label layoutX="21.0" layoutY="423.0" text="(Enter Any Field To Update)" />
+            <TextField fx:id="addPassWord" layoutX="556.0" layoutY="586.0" prefHeight="26.0" prefWidth="127.0" promptText="Password" />
+
+			</children>
+		</AnchorPane>
+   </bottom>
+</BorderPane>
