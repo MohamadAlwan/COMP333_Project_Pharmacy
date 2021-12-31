@@ -214,12 +214,12 @@ public class SampleController {
 				e.printStackTrace();
 			}
 			sqlDate = new java.sql.Date(myDate.getTime());
-//			System.out.println("update  employee set date_of_employment = " + sqlDate + " where id = " + ID_num);
+			System.out.println("update  employee set date_of_employment = " + sqlDate + " where id = " + ID_num);
 			Connector.a.connectDB();
 			Connector.a.ExecuteStatement(
-					"update  employee set date_of_employment = " + sqlDate + " where id = " + ID_num + ";");
+					"update  employee set date_of_employment = '" + sqlDate + "' where id = " + ID_num + ";");
 			Connector.a.connectDB().close();
-//			System.out.println("Connection closed");
+			System.out.println("Connection closed");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
