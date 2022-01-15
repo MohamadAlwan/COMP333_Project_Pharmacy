@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="application.SampleController">
    <bottom>
 		<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="933.0" BorderPane.alignment="CENTER">
 			<children>

@@ -5,8 +5,7 @@ module pharmacy {
 	requires javafx.graphics;
 	requires mysql.connector.java;
 	requires javafx.base;
-//	requires mysql.connector.java;
 
 	opens application to javafx.graphics, javafx.fxml, javafx.base;
-
+	
 }
