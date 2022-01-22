@@ -50,14 +50,7 @@
 					</font>
 				</Label>
 				<TextField fx:id="SearchFiled" layoutX="427.0" layoutY="90.0" prefHeight="30.0" prefWidth="254.0" promptText="Search by id or emplouee name" />
-				<TextField fx:id="ID" layoutX="289.0" layoutY="589.0" prefHeight="26.0" prefWidth="96.0" promptText="ID" />
-				<Button fx:id="Delete" layoutX="409.0" layoutY="587.0" mnemonicParsing="false" onAction="#deleteOnAction" prefHeight="26.0" prefWidth="81.0" styleClass="dark-blue" stylesheets="@application.css" text="Delete" />
 				<Line endX="867.0" layoutX="177.0" layoutY="564.0" startX="-174.99998474121094" stroke="#777272" />
-				<Label layoutX="118.0" layoutY="594.0" prefHeight="21.0" prefWidth="159.0" text="Delete Employee:" textFill="WHITE">
-					<font>
-						<Font name="Arial Bold" size="18.0" />
-					</font>
-				</Label>
 				<Line endX="854.0" layoutX="189.0" layoutY="639.0" startX="-185.99998474121094" stroke="#959595" />
 				<Label layoutX="14.0" layoutY="661.0" prefHeight="21.0" prefWidth="150.0" text="Add Employee :" textFill="WHITE">
 					<font>
@@ -92,6 +85,12 @@
             <TextField fx:id="newPass" layoutX="483.0" layoutY="524.0" prefHeight="31.0" prefWidth="118.0" promptText="New Password" />
             <TextField fx:id="newWHour" layoutX="746.0" layoutY="524.0" prefHeight="31.0" prefWidth="125.0" promptText="New Work Hour" />
             <TextField fx:id="newHPrice" layoutX="611.0" layoutY="524.0" prefHeight="31.0" prefWidth="126.0" promptText="New Hour Prise" />
+            <Button fx:id="Delete" contentDisplay="RIGHT" layoutX="388.0" layoutY="582.0" mnemonicParsing="false" onAction="#deleteOnAction" prefHeight="40.0" prefWidth="214.0" styleClass="button2" stylesheets="@application.css" text="      Delete selected Row  " />
+            <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="397.0" layoutY="586.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../delete.png" />
+               </image>
+            </ImageView>
 
 			</children>
 		</AnchorPane>

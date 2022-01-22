@@ -117,7 +117,7 @@
 
 
 .back{
-	 -fx-background-image: url('b.png');
+	 -fx-background-image: url('file:/Users/Eyab/Desktop/Project_Pharmacy/pharmacy/b.png');
      -fx-background-size: 100% 100%;  
 	
 }

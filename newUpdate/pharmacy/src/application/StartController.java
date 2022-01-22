@@ -111,18 +111,20 @@ public class StartController {
 	@FXML
 	void Order(ActionEvent event) {
 		try { // open new stage
+			
 			Stage stage;
 			Parent root;
 			stage = (Stage) btnOrder.getScene().getWindow();
 			stage.close();
 			root = FXMLLoader.load(getClass().getResource("orderes.fxml"));
-			Scene scene = new Scene(root, 930, 670);
+			Scene scene = new Scene(root, 951, 781);
 			stage.setScene(scene);
 			stage.setTitle("orderes");
 			stage.show();
 
 		} catch (IOException e1) {
 		}
+		
 	}
 
 	@FXML

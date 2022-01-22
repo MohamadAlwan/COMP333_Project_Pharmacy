@@ -635,34 +635,27 @@ public class SampleController {
 
 	@FXML
 	void deleteOnAction(ActionEvent event) {
-
-		try {
-			if (ID.getText() != null) {
-				int id = Integer.parseInt(ID.getText());
-				deleteRow(id);
-			}
-
-			ID.clear();
-		} catch (Exception e) {
-
+		ObservableList<Employeedata> selectedRows = TableData.getSelectionModel().getSelectedItems();
+		ArrayList<Employeedata> rows = new ArrayList<>(selectedRows);
+		if(rows.size()==0) {
+			return;
 		}
-		initialize();
+		deleteRow(rows.get(0));
 
 	}
 
-	private void deleteRow(int id) {
+	private void deleteRow(Employeedata row) {
 		try {
-//			System.out.println("delete from  employee where id =" + id + ";");
 			Connector.a.connectDB();
-			Connector.a.ExecuteStatement("delete from  employee where id =" + id + ";");
+			Connector.a.ExecuteStatement("delete from  employee where id =" + row.getId() + ";");
 			Connector.a.connectDB().close();
-//			System.out.println("Connection closed");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		initialize();
 	}
 
 	@FXML

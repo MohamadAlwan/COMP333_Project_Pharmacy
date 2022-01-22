@@ -5,7 +5,6 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.BreakIterator;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -22,6 +21,7 @@ import javafx.stage.Stage;
 
 public class SceneController {
 	public static String ManegName;
+	public static int empId;
 	public static String ManegPassword;
 	private Stage stage;
 	private Scene scene;
@@ -73,12 +73,11 @@ public class SceneController {
 					Manegar.mng.setName(ManegName);
 					Manegar.mng.setPassword(ManegPassword);
 					try { // open new stage
-						Stage stage;
-						Parent root;
+
 						stage = (Stage) btnLogin.getScene().getWindow();
 						stage.close();
 						root = FXMLLoader.load(getClass().getResource("Start.fxml"));
-						Scene scene = new Scene(root, 901, 649);
+						scene = new Scene(root, 901, 649);
 						stage.setScene(scene);
 						stage.setTitle("Chose One");
 						stage.show();
@@ -97,6 +96,14 @@ public class SceneController {
 
 //				}
 
+			PreparedStatement st2 = Connector.a.connectDB()
+					.prepareStatement("select * from employee where employee_name = ?");
+			st2.setString(1, ManegName);
+			ResultSet r2 = st2.executeQuery();
+			if (r2.next()) {
+				empId = r2.getInt(1);
+//			System.out.println("id >>"+r2.getInt(1));
+			}
 		} catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
