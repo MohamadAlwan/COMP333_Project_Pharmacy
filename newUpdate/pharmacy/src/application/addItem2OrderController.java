@@ -3,6 +3,7 @@ package application;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,26 +64,27 @@ public class addItem2OrderController {
 
 		PreparedStatement st2 = null;
 		ResultSet r2 = null;
+		int qunt;
 		try {
-			if(!item_parcode.getText().equals("")) {
-				st2 = Connector.a.connectDB().prepareStatement("select * from item where par_code="+Integer.parseInt(item_parcode.getText())+";");
-				
-			}
-			else {
-				st2 = Connector.a.connectDB().prepareStatement("select * from item where item_name='"+Item_name.getText()+"';");
+			if (!item_parcode.getText().equals("")) {
+				st2 = Connector.a.connectDB().prepareStatement(
+						"select * from item where par_code=" + Integer.parseInt(item_parcode.getText()) + ";");
+
+			} else {
+				st2 = Connector.a.connectDB()
+						.prepareStatement("select * from item where item_name='" + Item_name.getText() + "';");
 
 			}
 			r2 = st2.executeQuery();
 			if (r2.next()) {
-				System.out.println("name >>" + r2.getString(1));
-				System.out.println("id >>" + r2.getInt(2));
-				System.out.println("quant >>" + r2.getInt(3));
-				System.out.println("seal price >>" + r2.getDouble(5));
-				System.out.println("orginal price >>" + r2.getDouble(6));
+//				System.out.println("name >>" + r2.getString(1));
+//				System.out.println("id >>" + r2.getInt(2));
+//				System.out.println("quant >>" + r2.getInt(3));
+//				System.out.println("seal price >>" + r2.getDouble(5));
+//				System.out.println("orginal price >>" + r2.getDouble(6));
 
-			}
-			else {
-				Message.displayMassage("Warning", "this item not found !");
+			} else {
+				Message.displayMassage("this item not found !", "error");
 				return;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -91,26 +93,44 @@ public class addItem2OrderController {
 		}
 
 		try {
+			if (r2.getInt(3) - item_quant.getValue() >= 0) {
+				try {
 
-			Connector.a.connectDB();
-			String sql = "insert into invoice(quantity ,full_sale_price ,full_original_price ,par_code,order_id) values (?,?,?,?,?);";
-			PreparedStatement ps = (PreparedStatement) Connector.a.connectDB().prepareStatement(sql);
+					Connector.a.connectDB();
+					String sql = "insert into invoice(quantity ,full_sale_price ,full_original_price ,par_code,order_id) values (?,?,?,?,?);";
+					PreparedStatement ps = (PreparedStatement) Connector.a.connectDB().prepareStatement(sql);
+					Connector.a.ExecuteStatement("update item set quantity = " + (r2.getInt(3) - item_quant.getValue())
+							+ " where par_code = " + r2.getInt(2) + " and provide_company_name = '" + r2.getString(7)
+							+ "' and cat_id = " + r2.getInt(8) + ";");
 
-			ps.setInt(1, item_quant.getValue());
-			ps.setDouble(2, r2.getDouble(5));
-			ps.setDouble(3, r2.getDouble(6));
-			ps.setInt(4, r2.getInt(2));
-			ps.setInt(5, orderesController.orderId);
-			ps.execute();
+					ps.setInt(1, item_quant.getValue());
+					ps.setDouble(2, r2.getDouble(5));
+					ps.setDouble(3, r2.getDouble(6));
+					ps.setInt(4, r2.getInt(2));
+					ps.setInt(5, orderesController.orderId);
+					ps.execute();
 
+				} catch (SQLException e) {
+					if (e.getErrorCode() == 1062) {
+						Message.displayMassage("this item is already added !", "warning");
+						return;
+					}
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+
+				Stage stage = (Stage) cancelItem.getScene().getWindow();
+				stage.close();
+			} else {
+				Message.displayMassage(
+						"There is not enough quantity of this product!\r\n" + "There is only: " + r2.getInt(3),
+						"warning");
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		Stage stage = (Stage) cancelItem.getScene().getWindow();
-		stage.close();
 	}
 
 	@FXML

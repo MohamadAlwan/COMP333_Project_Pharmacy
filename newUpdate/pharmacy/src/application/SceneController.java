@@ -56,11 +56,11 @@ public class SceneController {
 //
 //			} 
 			if (UserName.getText().isEmpty()) {
-				Message.displayMassage("Warning", "Please enter the user name");
+				Message.displayMassage("Please enter the user name","Warning");
 				return;
 			}
 			if (PassWord.getText().isEmpty()) {
-				Message.displayMassage("Warning", "Please enter the password");
+				Message.displayMassage("Please enter the password","Warning");
 				return;
 			}
 //			else {
@@ -83,14 +83,14 @@ public class SceneController {
 						stage.show();
 
 					} catch (IOException e1) {
-						Message.displayMassage("Warning",
-								"There is no account at this username and password, Try again");
+						Message.displayMassage(
+								"There is no account at this username and password, Try again","error");
 //							showDialog("error", "you entered a wrong data", null, AlertType.ERROR);
 					}
 				}
 
 			} else {
-				Message.displayMassage("Warning", "There is no account at this username and password, Try again");
+				Message.displayMassage( "There is no account at this username and password, Try again","error");
 //					showDialog("error", "you entered a wrong data", null, AlertType.ERROR);
 			}
 

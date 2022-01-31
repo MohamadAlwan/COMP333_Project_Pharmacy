@@ -1,14 +1,21 @@
 package application;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,6 +28,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
@@ -30,8 +38,12 @@ import javafx.util.converter.IntegerStringConverter;
 
 public class orderesController {
 
+	public static boolean isCash = true;
+	public static boolean isInsurance = false;
 	public static int orderId;
-	private double priceToShow=0;
+	private double priceToShow = 0;
+	private double originalPrice = 0;
+	String toFile = "";
 	private ArrayList<invoiceData> data;
 	private ObservableList<invoiceData> dataList;
 	@FXML
@@ -56,7 +68,7 @@ public class orderesController {
 	private TableColumn<invoiceData, Integer> itemQuantity;
 
 	@FXML
-	private TableColumn<ordersData, Integer> itembyEmployee;
+	private TableColumn<invoiceData, Integer> itembyEmployee;
 
 	@FXML
 	private Button addItem;
@@ -106,15 +118,19 @@ public class orderesController {
 	@FXML
 	private TextField search;
 
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	LocalDateTime now = LocalDateTime.now();
+
 	@FXML
 	void CancelOrder(ActionEvent event) {
 
 		try {
-			Connector.a.connectDB();
-			Connector.a.ExecuteStatement("delete from  orderes where order_id =" + orderId + ";");
-			Connector.a.ExecuteStatement("delete from  invoice where order_id =" + orderId + ";");
-
-			Connector.a.connectDB().close();
+			if (!allOrdersController.isOpen) {
+				Connector.a.connectDB();
+				Connector.a.ExecuteStatement("delete from  invoice where order_id =" + orderId + ";");
+				Connector.a.ExecuteStatement("delete from  orderes where order_id =" + orderId + ";");
+				Connector.a.connectDB().close();
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -159,37 +175,12 @@ public class orderesController {
 
 			@Override
 			public void handle(WindowEvent paramT) {
-				
-				data = new ArrayList<>();
-				dataList = FXCollections.observableArrayList(data);
-				TableData.setEditable(true);
-				counter.setSortable(false);
-				counter.setCellValueFactory(column-> new ReadOnlyObjectWrapper<Number>(TableData.getItems().indexOf(column.getValue())+1));
-				
-				itemParcode.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("par_code"));
-				itemParcode
-						.setCellFactory(TextFieldTableCell.<invoiceData, Integer>forTableColumn(new IntegerStringConverter()));
-		
-				itemName.setCellValueFactory(new PropertyValueFactory<invoiceData, String>("itemName"));
-		
-				itemQuantity.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("quantity"));
-		
-				itemCategory.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("itemCat"));
-		
-				itemPrice.setCellValueFactory(new PropertyValueFactory<invoiceData, Double>("full_sale_price"));
-		
-//				itembyEmployee.setCellValueFactory(new PropertyValueFactory<ordersData, Integer>("empId"));
-				
-				getData();
-				price.setText(priceToShow+"");
 
-				TableData.setItems(dataList);
-
+				initialize();
 
 			}
 		});
-		
-//		System.out.println("refresh!!!!!!!!!!!");
+
 	}
 
 	@FXML
@@ -212,10 +203,12 @@ public class orderesController {
 	void back(ActionEvent event) {
 
 		try {
-			Connector.a.connectDB();
-			Connector.a.ExecuteStatement("delete from  orderes where order_id =" + orderId + ";");
-			Connector.a.connectDB().close();
-
+			if (!allOrdersController.isOpen) {
+				Connector.a.connectDB();
+				Connector.a.ExecuteStatement("delete from  invoice where order_id =" + orderId + ";");
+				Connector.a.ExecuteStatement("delete from  orderes where order_id =" + orderId + ";");
+				Connector.a.connectDB().close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -235,11 +228,14 @@ public class orderesController {
 		} catch (IOException e1) {
 
 		}
+
 	}
 
 	@FXML
 	void cashOrder(ActionEvent event) {
 
+		isCash = true;
+		isInsurance = false;
 		priceBefore.setVisible(false);
 		discount.setVisible(false);
 		addinsurance.setVisible(false);
@@ -257,38 +253,18 @@ public class orderesController {
 			return;
 		}
 		deleteRow(rows.get(0));
-		
-		
-//		data = new ArrayList<>();
-//		dataList = FXCollections.observableArrayList(data);
-//		TableData.setEditable(true);
-//		counter.setSortable(false);
-//		counter.setCellValueFactory(column-> new ReadOnlyObjectWrapper<Number>(TableData.getItems().indexOf(column.getValue())+1));
-//		
-//		itemParcode.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("par_code"));
-//		itemParcode
-//				.setCellFactory(TextFieldTableCell.<invoiceData, Integer>forTableColumn(new IntegerStringConverter()));
-//
-//		itemName.setCellValueFactory(new PropertyValueFactory<invoiceData, String>("itemName"));
-//
-//		itemQuantity.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("quantity"));
-//
-//		itemCategory.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("itemCat"));
-//
-//		itemPrice.setCellValueFactory(new PropertyValueFactory<invoiceData, Double>("full_sale_price"));
-//
-//		itembyEmployee.setCellValueFactory(new PropertyValueFactory<ordersData, Integer>("empId"));
-//
-//		getData();
-//		TableData.setItems(dataList);
+
 	}
 
 	private void deleteRow(invoiceData row) {
-		priceToShow-=row.getFull_sale_price()*row.getQuantity();
+		priceToShow -= row.getFull_sale_price() * row.getQuantity();
+		originalPrice -= row.getFull_original_price() * row.getQuantity();
 		try {
 			Connector.a.connectDB();
-			System.out.println("delete from invoice where  order_id=" +row.getOrder_id()  + " and par_code="+row.getPar_code()+";");
-			Connector.a.ExecuteStatement("delete from invoice where  order_id=" +row.getOrder_id()  + " and par_code="+row.getPar_code()+";");
+//			System.out.println("delete from invoice where  order_id=" + row.getOrder_id() + " and par_code="
+//					+ row.getPar_code() + ";");
+			Connector.a.ExecuteStatement("delete from invoice where  order_id=" + row.getOrder_id() + " and par_code="
+					+ row.getPar_code() + ";");
 			Connector.a.connectDB().close();
 
 		} catch (SQLException e) {
@@ -296,13 +272,15 @@ public class orderesController {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		initialize();
 	}
 
 	@FXML
 	void insuranceOrder(ActionEvent event) {
 
+		isCash = false;
+		isInsurance = true;
 		priceBefore.setVisible(true);
 		discount.setVisible(true);
 		addinsurance.setVisible(true);
@@ -311,9 +289,140 @@ public class orderesController {
 		imgDis.setVisible(true);
 	}
 
+	private void updateQuantity(int id1, int id2, int newValue) {
+		try {
+			Connector.a.connectDB();
+			Connector.a.ExecuteStatement("update invoice set quantity = " + newValue + " where order_id = " + id2
+					+ " and par_code = " + id1 + ";");
+			Connector.a.connectDB().close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		initialize();
+
+	}
+
 	@FXML
 	void print(ActionEvent event) {
 
+		String type = "";
+		if (isInsurance)
+			type = "insurance";
+		else
+			type = "cash";
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+		java.util.Date myDate = null;
+		@SuppressWarnings("unused")
+		java.sql.Date sqlDate;
+		try {
+			myDate = formatter.parse(dtf.format(now));
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		sqlDate = new java.sql.Date(myDate.getTime());
+		if (!allOrdersController.isOpen) {
+			try {
+				Connector.a.connectDB();
+				String sql = "insert into bill(order_id,order_date,full_price,profits,bill_type,emp_id) value(?,?,?,?,?,?);";
+				PreparedStatement ps = (PreparedStatement) Connector.a.connectDB().prepareStatement(sql);
+				ps.setInt(1, orderId);
+				ps.setTimestamp(2, new java.sql.Timestamp(myDate.getTime()));
+				ps.setDouble(3, priceToShow);
+				ps.setDouble(4, priceToShow - originalPrice);
+				ps.setString(5, type);
+				ps.setInt(6, SceneController.empId);
+				ps.execute();
+				Connector.a.connectDB().close();
+
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				System.out.println("okkk");
+				Connector.a.connectDB();
+				Connector.a.ExecuteStatement(
+						"update bill set full_price = " + priceToShow + ", profits = " + (priceToShow - originalPrice)
+								+ ", emp_id = " + SceneController.empId + " where order_id = " + orderId + " ;");
+				Connector.a.connectDB().close();
+
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		String fileName = "Order_" + orderId + ".txt";
+		try {
+
+			FileWriter myWriter = new FileWriter(fileName);
+			myWriter.write(toFile);
+			myWriter.close();
+		} catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+		try { // open new stage
+			Stage stage;
+			Parent root;
+			stage = (Stage) cancelOrdre.getScene().getWindow();
+			stage.close();
+			root = FXMLLoader.load(getClass().getResource("Start.fxml"));
+			Scene scene = new Scene(root, 901, 649);
+			stage.setScene(scene);
+			stage.setTitle("Chose One");
+			stage.show();
+
+		} catch (IOException e1) {
+
+		}
+
+		try {
+			ProcessBuilder pb = new ProcessBuilder("Notepad.exe", fileName);
+			pb.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Message.displayMassage("The bill has been printed successfully", "ok");
+
+	}
+
+	private void searchRentalEmployee() {
+		FilteredList<invoiceData> filteredData = new FilteredList<>(dataList, b -> true);
+		search.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(invoice -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = newValue.toLowerCase();
+				if (String.valueOf(invoice.getPar_code()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
+					return true; // Filter matches car Id
+				} else if (invoice.getItemName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+					return true; // Filter matches password
+				} else if (String.valueOf(invoice.getItemCat()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
+					return true; // Filter matches password
+				} else
+					return false; // Does not match.
+			});
+		});
+		SortedList<invoiceData> sortedData = new SortedList<>(filteredData);
+		sortedData.comparatorProperty().bind(TableData.comparatorProperty());
+		TableData.setItems(sortedData);
 	}
 
 	@FXML
@@ -325,25 +434,27 @@ public class orderesController {
 	@FXML
 	public void initialize() {
 
-		if (!isCreatOrder) {
-			PreparedStatement st2;
-			try {
-
-				Connector.a.connectDB();
-				String sql = "insert into orderes(id) value(?);";
-				PreparedStatement ps = (PreparedStatement) Connector.a.connectDB().prepareStatement(sql);
-				ps.setInt(1, SceneController.empId);
-				ps.execute();
-				st2 = Connector.a.connectDB().prepareStatement(" select MAX(order_id) from orderes;");
-				ResultSet r2 = st2.executeQuery();
-				if (r2.next()) {
-					orderId = r2.getInt(1);
+		if (!allOrdersController.isOpen) {
+			if (!isCreatOrder) {
+				PreparedStatement st2;
+				try {
+					Connector.a.connectDB();
+					String sql = "insert into orderes(id) value(?);";
+					PreparedStatement ps = (PreparedStatement) Connector.a.connectDB().prepareStatement(sql);
+					ps.setInt(1, SceneController.empId);
+					ps.execute();
+					st2 = Connector.a.connectDB().prepareStatement("select MAX(order_id) from orderes;");
+					ResultSet r2 = st2.executeQuery();
+					if (r2.next()) {
+						orderId = r2.getInt(1);
+					}
+				} catch (ClassNotFoundException | SQLException e) {
+					e.printStackTrace();
 				}
-
-			} catch (ClassNotFoundException | SQLException e) {
-				e.printStackTrace();
+				isCreatOrder = true;
 			}
-			isCreatOrder = true;
+		} else {
+			orderId = allOrdersController.ordId;
 		}
 		orderID.setText(String.valueOf(orderId));
 		priceBefore.setVisible(false);
@@ -357,54 +468,83 @@ public class orderesController {
 		dataList = FXCollections.observableArrayList(data);
 		TableData.setEditable(true);
 		counter.setSortable(false);
-		counter.setCellValueFactory(column-> new ReadOnlyObjectWrapper<Number>(TableData.getItems().indexOf(column.getValue())+1));
-		
+		counter.setCellValueFactory(
+				column -> new ReadOnlyObjectWrapper<Number>(TableData.getItems().indexOf(column.getValue()) + 1));
 		itemParcode.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("par_code"));
-		itemParcode
-				.setCellFactory(TextFieldTableCell.<invoiceData, Integer>forTableColumn(new IntegerStringConverter()));
-
 		itemName.setCellValueFactory(new PropertyValueFactory<invoiceData, String>("itemName"));
-
 		itemQuantity.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("quantity"));
-
+		itemQuantity
+				.setCellFactory(TextFieldTableCell.<invoiceData, Integer>forTableColumn(new IntegerStringConverter()));
+		itemQuantity.setOnEditCommit((CellEditEvent<invoiceData, Integer> t) -> {
+			((invoiceData) t.getTableView().getItems().get(t.getTablePosition().getRow())).setQuantity(t.getNewValue()); // display
+			// only
+//			System.out.println(t.getRowValue().getPar_code());
+			updateQuantity(t.getRowValue().getPar_code(), t.getRowValue().getOrder_id(), t.getNewValue());
+		});
 		itemCategory.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("itemCat"));
-
 		itemPrice.setCellValueFactory(new PropertyValueFactory<invoiceData, Double>("full_sale_price"));
-
-//		itembyEmployee.setCellValueFactory(new PropertyValueFactory<ordersData, Integer>("empId"));
+		itembyEmployee.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("emp_id"));
 		getData();
-		price.setText(priceToShow+"");
-
+		price.setText(priceToShow + "");
 		TableData.setItems(dataList);
 
+		searchRentalEmployee();
 
 	}
 
 	public void getData() {
-		priceToShow=0;
-		String SQL = "select * from invoice where order_id=" + orderId + ";";
-
+		priceToShow = 0;
+		originalPrice = 0;
+		String SQL, od;
+		if (allOrdersController.isOpen) {
+			SQL = "select * from invoice where order_id=" + allOrdersController.ordId + ";";
+			od = "select * from orderes where order_id=" + allOrdersController.ordId + ";";
+		} else {
+			SQL = "select * from invoice where order_id=" + orderId + ";";
+			od = "select * from orderes where order_id=" + orderId + ";";
+		}
 		try {
-//			System.out.println("ok 22222");
 			Connector.a.connectDB();
 			java.sql.Statement state = Connector.a.connectDB().createStatement();
 			ResultSet rs = state.executeQuery(SQL);
-
+//			ResultSet ord = state.executeQuery(od);
+			int counter = 1;
+			toFile = "";
+			toFile += "\t" + "High Care Pharmacy" + "\n";
+			toFile += "===========================================" + "\n";
+			toFile += "Order id : " + orderId + "\n";
+			toFile += "Date : " + dtf.format(now) + "\n";
+			toFile += "================= Products ================" + "\n";
+			toFile += "# | Item Name   | Quantity | Price " + "\n";
 			while (rs.next()) {
 				String SQL2 = "select * from item where par_code=" + rs.getInt(4) + ";";
 				java.sql.Statement state2 = Connector.a.connectDB().createStatement();
 				ResultSet rs2 = state2.executeQuery(SQL2);
-//				System.out.println("ok!!");
-//				invoiceData it = null;
-				if (rs2.next()) {
-//					System.out.println("yes!!");
-					invoiceData it = new invoiceData(orderId, rs.getInt(1), rs.getDouble(2), rs.getDouble(3),
-							rs.getInt(4), rs2.getInt(8), rs2.getString(1));
-					dataList.add(it);
-					priceToShow+=rs.getDouble(2)*rs.getInt(1);
-//					System.out.println(it.toString());
-				}
 
+				if (rs2.next()) {
+					java.sql.Statement state3 = Connector.a.connectDB().createStatement();
+					ResultSet rs3 = state3.executeQuery(od);
+					if (rs3.next()) {
+
+						invoiceData it = new invoiceData(orderId, rs.getInt(1), rs.getDouble(2), rs.getDouble(3),
+								rs.getInt(4), rs2.getInt(8), rs2.getString(1), rs3.getInt(2));
+						dataList.add(it);
+						toFile += counter + "| " + rs2.getString(1) + " | " + rs.getInt(1) + " | "
+								+ (rs.getInt(1) * rs.getDouble(2)) + "\n";
+						toFile += "-------------------------------------------" + "\n";
+						priceToShow += rs.getDouble(2) * rs.getInt(1);
+						originalPrice += rs.getDouble(3) * rs.getInt(1);
+					}
+				}
+				counter++;
+			}
+			toFile += "============================================" + "\n";
+			toFile += "Total Amount : " + priceToShow + "\n";
+			toFile += "____________________________________________" + "\n";
+			if (isInsurance) {
+				toFile += "Payment method : Insurance" + "\n";
+			} else {
+				toFile += "Payment method : Cash" + "\n";
 			}
 			rs.close();
 			state.close();
@@ -417,5 +557,4 @@ public class orderesController {
 			e.printStackTrace();
 		}
 	}
-
 }

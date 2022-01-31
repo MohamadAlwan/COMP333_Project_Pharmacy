@@ -5,18 +5,16 @@ public class ordersData {
 	private int order_id;
 	private int empId;
 	private String order_date;
-	private String inshurance_company_name;
 	
 	public ordersData() {
 		super();
 	}
 
-	public ordersData(int order_id, int empId, String order_date, String inshurance_company_name) {
+	public ordersData(int order_id, int empId, String order_date) {
 		super();
 		this.order_id = order_id;
 		this.empId = empId;
 		this.order_date = order_date;
-		this.inshurance_company_name = inshurance_company_name;
 	}
 
 	public int getOrder_id() {
@@ -43,13 +41,7 @@ public class ordersData {
 		this.order_date = order_date;
 	}
 
-	public String getInshurance_company_name() {
-		return inshurance_company_name;
-	}
-
-	public void setInshurance_company_name(String inshurance_company_name) {
-		this.inshurance_company_name = inshurance_company_name;
-	}
+	
 	
 	
 	

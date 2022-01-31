@@ -79,7 +79,7 @@ public class StartController {
 			Parent root;
 			stage = (Stage) btnInsh.getScene().getWindow();
 			stage.close();
-			root = FXMLLoader.load(getClass().getResource("inshurance_company.fxml"));
+			root = FXMLLoader.load(getClass().getResource("inshuranceFX.fxml"));
 			Scene scene = new Scene(root, 930, 670);
 			stage.setScene(scene);
 			stage.setTitle("inshurance company");
@@ -98,7 +98,7 @@ public class StartController {
 			stage = (Stage) btnItem.getScene().getWindow();
 			stage.close();
 			root = FXMLLoader.load(getClass().getResource("item.fxml"));
-			Scene scene = new Scene(root, 930, 670);
+			Scene scene = new Scene(root, 1048, 768);
 			stage.setScene(scene);
 			stage.setTitle("item");
 			stage.show();
@@ -116,8 +116,8 @@ public class StartController {
 			Parent root;
 			stage = (Stage) btnOrder.getScene().getWindow();
 			stage.close();
-			root = FXMLLoader.load(getClass().getResource("orderes.fxml"));
-			Scene scene = new Scene(root, 951, 781);
+			root = FXMLLoader.load(getClass().getResource("chooseOrders.fxml"));
+			Scene scene = new Scene(root, 369, 474);
 			stage.setScene(scene);
 			stage.setTitle("orderes");
 			stage.show();
