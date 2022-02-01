@@ -1,0 +1,20 @@
+	High Care Pharmacy
+===========================================
+Order id : 39
+Date : 2022-02-01
+================= Products ================
+# | Item Name   | Quantity | Price 
+1| test | 1 | 1.0
+-------------------------------------------
+2| Acamol | 1 | 25.0
+-------------------------------------------
+============================================
+Price before : XX 26.0 XX
+Discount : 0.0
+Total Amount : 26.0
+____________________________________________
+Payment method : Insurance
+customer info. >>
+Name : 
+ID : 0
+Insurance Company : 
