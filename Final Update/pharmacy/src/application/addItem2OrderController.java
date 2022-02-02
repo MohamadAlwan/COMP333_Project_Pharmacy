@@ -3,6 +3,8 @@ package application;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
@@ -47,6 +49,9 @@ public class addItem2OrderController {
 
 	@FXML
 	private HBox parcode;
+
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	LocalDateTime now = LocalDateTime.now();
 
 	@FXML
 	public void initialize() {
@@ -95,7 +100,12 @@ public class addItem2OrderController {
 		try {
 			if (r2.getInt(3) - item_quant.getValue() >= 0) {
 				try {
+					if (r2.getDate(9).toString().compareTo(dtf.format(now).toString()) <=0) {
+						Message.displayMassage("Warning\nThis product is expired ", "warning");
 
+					}
+//					System.out.println(r2.getDate(9).toString());
+//					System.out.println(dtf.format(now).toString());
 					Connector.a.connectDB();
 					String sql = "insert into invoice(quantity ,full_sale_price ,full_original_price ,par_code,order_id) values (?,?,?,?,?);";
 					PreparedStatement ps = (PreparedStatement) Connector.a.connectDB().prepareStatement(sql);

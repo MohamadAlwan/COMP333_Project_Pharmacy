@@ -281,9 +281,9 @@ public class allOrdersController {
 			try { // open new stage
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				fxmlLoader.setLocation(getClass().getResource("staticsOrder.fxml"));
-				scene = new Scene(fxmlLoader.load(), 422, 428);
+				scene = new Scene(fxmlLoader.load(), 918, 463);
 				stage = new Stage();
-				stage.setTitle("New Window");
+				stage.setTitle("statics Orders");
 				stage.setScene(scene);
 				stage.show();
 

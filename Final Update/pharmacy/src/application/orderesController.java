@@ -76,6 +76,9 @@ public class orderesController {
 	private TableColumn<invoiceData, Integer> itembyEmployee;
 
 	@FXML
+	private TableColumn<invoiceData, String> expDate;
+
+	@FXML
 	private Button addItem;
 
 	@FXML
@@ -494,7 +497,7 @@ public class orderesController {
 			myWriter.write(toFile);
 			myWriter.close();
 		} catch (IOException e) {
-			System.out.println("An error occurred.");
+			Message.displayMassage("An error occurred.", "error");
 			e.printStackTrace();
 		}
 		try { // open new stage
@@ -608,12 +611,14 @@ public class orderesController {
 		});
 		itemCategory.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("itemCat"));
 		itemPrice.setCellValueFactory(new PropertyValueFactory<invoiceData, Double>("full_sale_price"));
+		expDate.setCellValueFactory(new PropertyValueFactory<invoiceData, String>("expDate"));
+
 		itembyEmployee.setCellValueFactory(new PropertyValueFactory<invoiceData, Integer>("emp_id"));
 		getData();
 		priceBefore.setText(priceToShow + " $");
 		price.setText(priceWithDisc + " $");
 		discount.setText(disc * 100 + " %");
-		System.out.println(">>|" + disc);
+//		System.out.println(">>|" + disc);
 		TableData.setItems(dataList);
 
 		searchRentalEmployee();
@@ -657,15 +662,16 @@ public class orderesController {
 					if (rs3.next()) {
 
 						invoiceData it = new invoiceData(orderId, rs.getInt(1), rs.getDouble(2), rs.getDouble(3),
-								rs.getInt(4), rs2.getInt(8), rs2.getString(1), rs3.getInt(2));
+								rs.getInt(4), rs2.getInt(8), rs2.getString(1), rs3.getInt(2),
+								rs2.getDate(9).toString());
 						dataList.add(it);
 						toFile += counter + "| " + rs2.getString(1) + " | " + rs.getInt(1) + " | "
 								+ (rs.getInt(1) * rs.getDouble(2)) + "\n";
 						toFile += "-------------------------------------------" + "\n";
 						priceToShow += (rs.getDouble(2) * rs.getInt(1));
 						priceWithDisc += ((rs.getDouble(2) * rs.getInt(1)) - ((rs.getDouble(2) * rs.getInt(1)) * disc));
-						System.out.println(">>" + (priceToShow * disc));
-						System.out.println("$ :" + priceWithDisc);
+//						System.out.println(">>" + (priceToShow * disc));
+//						System.out.println("$ :" + priceWithDisc);
 						originalPrice += rs.getDouble(3) * rs.getInt(1);
 					}
 				}
