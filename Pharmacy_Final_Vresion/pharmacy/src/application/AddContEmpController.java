@@ -11,20 +11,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class AddContEmpController {
 
-    @FXML
-    private TextField addDateOfBirth;
+	@FXML
+	private DatePicker addDateOfBirth;
 
-    @FXML
-    private TextField addName;
+	@FXML
+	private TextField addName;
 
-    @FXML
-    private TextField adddateofemployment;
+	@FXML
+	private DatePicker adddateofemployment;
+
 
     @FXML
     private TextField addPassWord;
@@ -51,13 +53,11 @@ public class AddContEmpController {
 		Employeedata rc;
 		try {
 
-			rc = new Employeedata(addName.getText(), addDateOfBirth.getText(), adddateofemployment.getText(),
+			rc = new Employeedata(addName.getText(),  addDateOfBirth.getValue().toString(), adddateofemployment.getValue().toString(),
 					addPassWord.getText(), Double.parseDouble(addAmountPaid.getText()));
 			Employeedata.emd = rc;
 			insertData(rc);
 			addName.clear();
-			addDateOfBirth.clear();
-			adddateofemployment.clear();
 			addPassWord.clear();
 			addAmountPaid.clear();
 
