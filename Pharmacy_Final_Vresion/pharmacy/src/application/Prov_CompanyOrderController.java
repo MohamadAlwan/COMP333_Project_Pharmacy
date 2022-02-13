@@ -140,7 +140,7 @@ public class Prov_CompanyOrderController implements Initializable {
 			ResultSet rs = state.executeQuery(SQL);
 			while (rs.next()) {
 				Prov_CompanyOrder order = new Prov_CompanyOrder(rs.getString(1).toString(),rs.getInt(2),
-						rs.getInt(9),rs.getString(10).toString(),rs.getDouble(6));
+						rs.getInt(10),rs.getString(11).toString(),rs.getDouble(6));
 				dataList.add(order);
 			}
 			rs.close();
