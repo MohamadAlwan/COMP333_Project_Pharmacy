@@ -58,15 +58,14 @@ public class SampleController {
 
 	@FXML
 	private TableColumn<Employeedata, String> NameColumn;
-	   @FXML
-	    private TableColumn<Employeedata, String> PassColumn;
+	@FXML
+	private TableColumn<Employeedata, String> PassColumn;
 
-	    @FXML
-	    private TableColumn<Employeedata, Double> W_HourColoumn;
+	@FXML
+	private TableColumn<Employeedata, Double> W_HourColoumn;
 
-	    @FXML
-	    private TableColumn<Employeedata, Double> H_PriceColumn;
-
+	@FXML
+	private TableColumn<Employeedata, Double> H_PriceColumn;
 
 	@FXML
 	private TextField Newdateofemployment;
@@ -106,88 +105,88 @@ public class SampleController {
 
 	@FXML
 	private TextField oldID;
-	 @FXML
-	    private Button btnback;
-	   @FXML
-	    private ToggleButton Hourly_Emp;
+	@FXML
+	private Button btnback;
+	@FXML
+	private ToggleButton Hourly_Emp;
 
-	    @FXML
-	    private ToggleGroup EmpType;
+	@FXML
+	private ToggleGroup EmpType;
 
-	    @FXML
-	    private ToggleButton Contrect_Emp;
-	    @FXML
-	    private TextField addWHours;
+	@FXML
+	private ToggleButton Contrect_Emp;
+	@FXML
+	private TextField addWHours;
 
-	    @FXML
-	    private TextField addHPrice;
+	@FXML
+	private TextField addHPrice;
 
-	    @FXML
-	    private TextField newPass;
+	@FXML
+	private TextField newPass;
 
-	    @FXML
-	    private TextField newWHour;
+	@FXML
+	private TextField newWHour;
 
-	    @FXML
-	    private TextField newHPrice;
-	   
-	    @FXML
-	    private Label DailySalary;
-	    
-	    @FXML
-	    private Label totalSalary;
+	@FXML
+	private TextField newHPrice;
 
-	    @FXML
-	    private Label labelTotal;
+	@FXML
+	private Label DailySalary;
 
-	    @FXML
-	    private Label labelDaily;
-	   
+	@FXML
+	private Label totalSalary;
 
-        boolean Contract = false;
-        boolean Hourly = true;
-	    
-	    @FXML
-	    void btnContrect_Emp(ActionEvent event) {
-           Contract = true;
-           Hourly = false;
-           H_PriceColumn.setText("Amount Paid");
-           W_HourColoumn.setVisible(false);
-           TableData.setPrefWidth(919);
-           TableData.setLayoutX(64);
-           newWHour.setVisible(false);
-           newHPrice.setPromptText("NewAmountPaid");
-           Update.setLayoutX(746);
-           DailySalary.setVisible(false);
-           labelDaily.setVisible(false);
-           labelTotal.setText("          Total Contract employee salaries ");
-	    	initialize();
-	    }
+	@FXML
+	private Label labelTotal;
 
-	    @FXML
-	    void btnHourly_Emp(ActionEvent event) {
-	    	 Contract = false;
-	         Hourly = true;
-	         H_PriceColumn.setText("Hour Price");
-	           W_HourColoumn.setVisible(true);
-	           TableData.setPrefWidth(1037);
-	           TableData.setLayoutX(9);
-	           newWHour.setVisible(true);
-	           newHPrice.setPromptText("New Hour Price");
-	           Update.setLayoutX(883);
-	           DailySalary.setVisible(true);
-	           labelDaily.setVisible(true);
-	           labelTotal.setText("  Total hourly employee salaries in one day");
-	         initialize();
-	    }
+	@FXML
+	private Label labelDaily;
+
+	boolean Contract = false;
+	boolean Hourly = true;
+
+	@FXML
+	void btnContrect_Emp(ActionEvent event) {
+		Contract = true;
+		Hourly = false;
+		H_PriceColumn.setText("Amount Paid");
+		W_HourColoumn.setVisible(false);
+		TableData.setPrefWidth(919);
+		TableData.setLayoutX(64);
+		newWHour.setVisible(false);
+		newHPrice.setPromptText("NewAmountPaid");
+		Update.setLayoutX(746);
+		DailySalary.setVisible(false);
+		labelDaily.setVisible(false);
+		labelTotal.setText("          Total Contract employee salaries ");
+		initialize();
+	}
+
+	@FXML
+	void btnHourly_Emp(ActionEvent event) {
+		Contract = false;
+		Hourly = true;
+		H_PriceColumn.setText("Hour Price");
+		W_HourColoumn.setVisible(true);
+		TableData.setPrefWidth(1037);
+		TableData.setLayoutX(9);
+		newWHour.setVisible(true);
+		newHPrice.setPromptText("New Hour Price");
+		Update.setLayoutX(883);
+		DailySalary.setVisible(true);
+		labelDaily.setVisible(true);
+		labelTotal.setText("  Total hourly employee salaries in one day");
+		initialize();
+	}
 
 	@FXML
 	public void initialize() {
 		data = new ArrayList<>();
 		dataList = FXCollections.observableArrayList(data);
 		TableData.setEditable(true);
-         
-		//IDColumn.setCellFactory(TextFieldTableCell.<Employeedata, Integer>forTableColumn(new IntegerStringConverter()));
+
+		// IDColumn.setCellFactory(TextFieldTableCell.<Employeedata,
+		// Integer>forTableColumn(new IntegerStringConverter()));
 		IDColumn.setCellValueFactory(new PropertyValueFactory<Employeedata, Integer>("id"));
 
 		NameColumn.setCellValueFactory(new PropertyValueFactory<Employeedata, String>("employee_name"));
@@ -229,79 +228,80 @@ public class SampleController {
 
 			updatePass(t.getRowValue().getId(), t.getNewValue());
 		});
-		if(Hourly) {
-		W_HourColoumn.setCellValueFactory(new PropertyValueFactory<Employeedata, Double>("work_hours"));
-		W_HourColoumn.setCellFactory(TextFieldTableCell.<Employeedata, Double>forTableColumn(new DoubleStringConverter()));
-		W_HourColoumn.setOnEditCommit((CellEditEvent<Employeedata, Double> t) -> {
-			((Employeedata) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-					.setWork_hours(t.getNewValue()); // display
-			// only
+		if (Hourly) {
+			W_HourColoumn.setCellValueFactory(new PropertyValueFactory<Employeedata, Double>("work_hours"));
+			W_HourColoumn.setCellFactory(
+					TextFieldTableCell.<Employeedata, Double>forTableColumn(new DoubleStringConverter()));
+			W_HourColoumn.setOnEditCommit((CellEditEvent<Employeedata, Double> t) -> {
+				((Employeedata) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+						.setWork_hours(t.getNewValue()); // display
+				// only
 
-			updateHourWork(t.getRowValue().getId(), t.getNewValue());
-		});
-		H_PriceColumn.setCellValueFactory(new PropertyValueFactory<Employeedata, Double>("hour_price"));
-		H_PriceColumn.setCellFactory(TextFieldTableCell.<Employeedata, Double>forTableColumn(new DoubleStringConverter()));
-		H_PriceColumn.setOnEditCommit((CellEditEvent<Employeedata, Double> t) -> {
-			((Employeedata) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-					.setHour_price(t.getNewValue()); // display
-			// only
-
-			updateHourPrice(t.getRowValue().getId(), t.getNewValue());
-		});
-		}
-		else if(Contract) {
-			H_PriceColumn.setCellValueFactory(new PropertyValueFactory<Employeedata, Double>("amount_paid"));
-			H_PriceColumn.setCellFactory(TextFieldTableCell.<Employeedata, Double>forTableColumn(new DoubleStringConverter()));
+				updateHourWork(t.getRowValue().getId(), t.getNewValue());
+			});
+			H_PriceColumn.setCellValueFactory(new PropertyValueFactory<Employeedata, Double>("hour_price"));
+			H_PriceColumn.setCellFactory(
+					TextFieldTableCell.<Employeedata, Double>forTableColumn(new DoubleStringConverter()));
 			H_PriceColumn.setOnEditCommit((CellEditEvent<Employeedata, Double> t) -> {
 				((Employeedata) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-						.setAmount_paid( t.getNewValue()); // display
+						.setHour_price(t.getNewValue()); // display
+				// only
+
+				updateHourPrice(t.getRowValue().getId(), t.getNewValue());
+			});
+		} else if (Contract) {
+			H_PriceColumn.setCellValueFactory(new PropertyValueFactory<Employeedata, Double>("amount_paid"));
+			H_PriceColumn.setCellFactory(
+					TextFieldTableCell.<Employeedata, Double>forTableColumn(new DoubleStringConverter()));
+			H_PriceColumn.setOnEditCommit((CellEditEvent<Employeedata, Double> t) -> {
+				((Employeedata) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+						.setAmount_paid(t.getNewValue()); // display
 				// only
 
 				updateAmountPaid(t.getRowValue().getId(), t.getNewValue());
 			});
 		}
-		
+
 		getData();
 		TableData.setItems(dataList);
 		searchRentalEmployee();
 		if (Hourly) {
 			DailySalary();
-		   }
-		 TotalSalary();
+		}
+		TotalSalary();
 	}
+
 	private void TotalSalary() {
-	if (Hourly) {
-		double total = 0;
-		for(int i=0; i<TableData.getItems().size();i++) {
-			double wHours = TableData.getItems().get(i).getWork_hours();
-	    	double hPrice = TableData.getItems().get(i).getHour_price();
-	    	double dailyPrice = wHours*hPrice;
-	    	total += dailyPrice;
+		if (Hourly) {
+			double total = 0;
+			for (int i = 0; i < TableData.getItems().size(); i++) {
+				double wHours = TableData.getItems().get(i).getWork_hours();
+				double hPrice = TableData.getItems().get(i).getHour_price();
+				double dailyPrice = wHours * hPrice;
+				total += dailyPrice;
+			}
+
+			totalSalary.setText(total + "");
+		} else if (Contract) {
+			double total = 0;
+			for (int i = 0; i < TableData.getItems().size(); i++) {
+				double amountPaid = TableData.getItems().get(i).getAmount_paid();
+				total += amountPaid;
+			}
+
+			totalSalary.setText(total + "");
 		}
-		
-		totalSalary.setText(total+"");
-	}
-	else if(Contract) {
-		double total = 0;
-		for(int i=0; i<TableData.getItems().size();i++) {
-			double amountPaid = TableData.getItems().get(i).getAmount_paid();
-	    	total += amountPaid;
-		}
-		
-		totalSalary.setText(total+"");
-	}
 	}
 
 	private void DailySalary() {
 		TableData.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-		    if (newSelection != null) {
-		    	double wHours = TableData.getSelectionModel().getSelectedItem().getWork_hours();
-		    	double hPrice = TableData.getSelectionModel().getSelectedItem().getHour_price();
-		    	double dailyPrice = wHours*hPrice;
-		    	 DailySalary.setText(dailyPrice+""); 	
-		    }
-		    else {
-		    	 DailySalary.setText(""); 	
+			if (newSelection != null) {
+				double wHours = TableData.getSelectionModel().getSelectedItem().getWork_hours();
+				double hPrice = TableData.getSelectionModel().getSelectedItem().getHour_price();
+				double dailyPrice = wHours * hPrice;
+				DailySalary.setText(dailyPrice + "");
+			} else {
+				DailySalary.setText("");
 			}
 		});
 	}
@@ -310,8 +310,8 @@ public class SampleController {
 		try {
 //			System.out.println("update  employee set employee_name = '" + name + "' where id = " + ID_num);
 			Connector.a.connectDB();
-			Connector.a
-					.ExecuteStatement("update  contrect_employee set amount_paid = " + newValue + " where id = " + id2 + ";");
+			Connector.a.ExecuteStatement(
+					"update  contrect_employee set amount_paid = " + newValue + " where id = " + id2 + ";");
 			Connector.a.connectDB().close();
 //			System.out.println("Connection closed");
 
@@ -326,8 +326,8 @@ public class SampleController {
 		try {
 //			System.out.println("update  employee set employee_name = '" + name + "' where id = " + ID_num);
 			Connector.a.connectDB();
-			Connector.a
-					.ExecuteStatement("update  hourly_employee set hour_price = " + newValue + " where id = " + id2 + ";");
+			Connector.a.ExecuteStatement(
+					"update  hourly_employee set hour_price = " + newValue + " where id = " + id2 + ";");
 			Connector.a.connectDB().close();
 //			System.out.println("Connection closed");
 
@@ -336,15 +336,15 @@ public class SampleController {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void updateHourWork(int id2, double newValue) {
 		try {
 //			System.out.println("update  employee set employee_name = '" + name + "' where id = " + ID_num);
 			Connector.a.connectDB();
-			Connector.a
-					.ExecuteStatement("update  hourly_employee set work_hours = " + newValue + " where id = " + id2 + ";");
+			Connector.a.ExecuteStatement(
+					"update  hourly_employee set work_hours = " + newValue + " where id = " + id2 + ";");
 			Connector.a.connectDB().close();
 //			System.out.println("Connection closed");
 
@@ -353,7 +353,7 @@ public class SampleController {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void updatePass(int id2, String newValue) {
@@ -370,7 +370,7 @@ public class SampleController {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void searchRentalEmployee() {
@@ -386,7 +386,8 @@ public class SampleController {
 				if (employeedata.getEmployee_name().toLowerCase().indexOf(lowerCaseFilter) != -1) {
 					return true; // Filter matches car Id
 				} else if (String.valueOf(employeedata.getId()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
-					return true; } // Filter matches password
+					return true;
+				} // Filter matches password
 				else
 					return false; // Does not match.
 			});
@@ -397,30 +398,29 @@ public class SampleController {
 	}
 
 	public void getData() {
-		if(Hourly) {
-		String SQL = "select * from employee e,hourly_employee h  where e.id=h.id order by e.id";
-		try {
-			Connector.a.connectDB();
-			java.sql.Statement state = Connector.a.connectDB().createStatement();
-			ResultSet rs = state.executeQuery(SQL);
-			while (rs.next()) {
-				Employeedata em = new Employeedata(rs.getString(2).toString(), rs.getDate(3).toString(),
-						rs.getDate(4).toString(), rs.getString(5).toString(),rs.getDouble(7),rs.getDouble(8));
-				em.setId(rs.getInt(1));
-				dataList.add(em);
+		if (Hourly) {
+			String SQL = "select * from employee e,hourly_employee h  where e.id=h.id order by e.id";
+			try {
+				Connector.a.connectDB();
+				java.sql.Statement state = Connector.a.connectDB().createStatement();
+				ResultSet rs = state.executeQuery(SQL);
+				while (rs.next()) {
+					Employeedata em = new Employeedata(rs.getString(2).toString(), rs.getDate(3).toString(),
+							rs.getDate(4).toString(), rs.getString(5).toString(), rs.getDouble(7), rs.getDouble(8));
+					em.setId(rs.getInt(1));
+					dataList.add(em);
+				}
+				rs.close();
+				state.close();
+				Connector.a.connectDB().close();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			rs.close();
-			state.close();
-			Connector.a.connectDB().close();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		}
-		else if(Contract) {
+		} else if (Contract) {
 			String SQL = "select * from employee e,contrect_employee c  where e.id=c.id order by e.id";
 			try {
 				Connector.a.connectDB();
@@ -428,7 +428,7 @@ public class SampleController {
 				ResultSet rs = state.executeQuery(SQL);
 				while (rs.next()) {
 					Employeedata em = new Employeedata(rs.getString(2).toString(), rs.getDate(3).toString(),
-							rs.getDate(4).toString(), rs.getString(5).toString(),rs.getDouble(7));
+							rs.getDate(4).toString(), rs.getString(5).toString(), rs.getDouble(7));
 					em.setId(rs.getInt(1));
 					dataList.add(em);
 				}
@@ -480,12 +480,13 @@ public class SampleController {
 			sqlDate = new java.sql.Date(myDate.getTime());
 			System.out.println(sqlDate);
 
-		//	System.out.println("update  employee set birthday = '" + sqlDate + "' where id = " + ID_num);
+			// System.out.println("update employee set birthday = '" + sqlDate + "' where id
+			// = " + ID_num);
 			Connector.a.connectDB();
 			Connector.a
 					.ExecuteStatement("update  employee set birthday = '" + sqlDate + "' where id = " + ID_num + ";");
 			Connector.a.connectDB().close();
-		//	System.out.println("Connection closed");
+			// System.out.println("Connection closed");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -509,12 +510,13 @@ public class SampleController {
 				e.printStackTrace();
 			}
 			sqlDate = new java.sql.Date(myDate.getTime());
-		//	System.out.println("update  employee set date_of_employment = " + sqlDate + " where id = " + ID_num);
+			// System.out.println("update employee set date_of_employment = " + sqlDate + "
+			// where id = " + ID_num);
 			Connector.a.connectDB();
 			Connector.a.ExecuteStatement(
 					"update  employee set date_of_employment = '" + sqlDate + "' where id = " + ID_num + ";");
 			Connector.a.connectDB().close();
-		//	System.out.println("Connection closed");
+			// System.out.println("Connection closed");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -580,7 +582,6 @@ public class SampleController {
 
 	}
 
-	
 	@FXML
 	void deleteOnAction(ActionEvent event) {
 
@@ -589,13 +590,12 @@ public class SampleController {
 				int id = Integer.parseInt(ID.getText());
 				deleteRow(id);
 			}
-		
+
 			ID.clear();
 		} catch (Exception e) {
 
 		}
-        initialize();
-
+		initialize();
 
 	}
 
@@ -619,16 +619,15 @@ public class SampleController {
 
 		ObservableList<Employeedata> selectedRows = TableData.getSelectionModel().getSelectedItems();
 		ArrayList<Employeedata> rows = new ArrayList<>(selectedRows);
-		if(rows.size()==0) {
+		if (rows.size() == 0) {
 			return;
 		}
-	
+
 		deleteRow(rows.get(0).getId());
 		initialize();
 
 	}
 
-	
 	@FXML
 	void updateOnAction(ActionEvent event) {
 
@@ -647,17 +646,16 @@ public class SampleController {
 				if (newPass.getText().length() > 0) {
 					updatePass(id, newPass.getText());
 				}
-				if(Hourly) {
-				if (newHPrice.getText().length() > 0) {
-					updateHourPrice(id,Double.parseDouble(newHPrice.getText()));
-				}
-				if (newWHour.getText().length() > 0) {
-					updateHourWork(id,Double.parseDouble(newWHour.getText()));
-				}
-				}
-				else if(Contract) {
+				if (Hourly) {
 					if (newHPrice.getText().length() > 0) {
-						updateAmountPaid(id,Double.parseDouble(newHPrice.getText()));
+						updateHourPrice(id, Double.parseDouble(newHPrice.getText()));
+					}
+					if (newWHour.getText().length() > 0) {
+						updateHourWork(id, Double.parseDouble(newWHour.getText()));
+					}
+				} else if (Contract) {
+					if (newHPrice.getText().length() > 0) {
+						updateAmountPaid(id, Double.parseDouble(newHPrice.getText()));
 					}
 				}
 				oldID.clear();
@@ -667,15 +665,16 @@ public class SampleController {
 				newPass.clear();
 				newHPrice.clear();
 				newWHour.clear();
-              initialize();
- 
+				initialize();
+
 			}
 		} catch (Exception e) {
 
 		}
-		//refresh();
+		// refresh();
 
 	}
+
 	@FXML
 	void back(ActionEvent event) {
 		try { // open new stage
@@ -688,15 +687,15 @@ public class SampleController {
 			stage.setScene(scene);
 			stage.setTitle("Chose One");
 			stage.show();
-			
+
 		} catch (IOException e1) {
-			
+
 		}
 	}
 
-	  @FXML
-	    void btnRefresh(ActionEvent event) {
-               initialize();
-	    }
+	@FXML
+	void btnRefresh(ActionEvent event) {
+		initialize();
+	}
 
 }
